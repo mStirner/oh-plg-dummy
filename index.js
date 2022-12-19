@@ -1,5 +1,3 @@
-const os = require("os");
-
 module.exports = (info, logger, init) => {
     return init([], (scope, []) => {
 
