@@ -72,7 +72,55 @@ module.exports = (info, logger, init) => {
 ```
 
 ## Development
-Mount your plugin into the backend:
-```sh
-sudo mount --bind /<path to plugin source>/ /<path to backend>/plugins/<plugin uuid>/
+Create a new plugin over the HTTP API:<br />
+`[PUT] http://{{HOST}}:{{PORT}}/api/plugins/`:
+```json
+{
+    "name": "Dummy Plugin",
+    "enabled": true,
+    "version": 1,
+    "intents": [
+        "devices", 
+        "endpoints", 
+        "ssdp", 
+        "vault", 
+        "store"
+    ]
+}
 ```
+
+Example output from the API:
+```json
+{
+    "_id": "63a088ba41d049eca2f93ac5",
+    "name": "Dummy Plugin",
+    "enabled": true,
+    "version": 1,
+    "intents": [
+        "devices",
+        "endpoints",
+        "ssdp",
+        "vault",
+        "store"
+    ],
+    "timestamps": {
+        "created": 1671465146575,
+        "updated": null
+    },
+    "uuid": "e20cf5fe-3050-418c-906f-ea27359682d7",
+    "autostart": true
+}
+```
+
+Mount the plugin source code into the backend plugins folder:
+```sh
+sudo mount --bind ~/projects/OpenHaus/plugins/oh-plg-dummy/ ~/projects/OpenHaus/backend/plugins/e20cf5fe-3050-418c-906f-ea27359682d7/
+```
+> Use the UUID returned from the HTTP API after creating the plugin item
+
+Then start the backend with:
+```sh
+npm run dev
+```
+
+The changes made in the plugin source code, should trigger a automatically backend reload.
